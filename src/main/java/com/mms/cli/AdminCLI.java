@@ -84,8 +84,11 @@ public class AdminCLI {
         System.out.print("Enter password: ");
         String password = scanner.nextLine().trim();
         
-        controller.registerPatient(name, phone, email, password);
-        System.out.println("✓ Patient registered successfully");
+        Patient newPatient = controller.registerPatientAndReturn(name, phone, email, password);
+        System.out.println("\n✓ Patient registered successfully!");
+        System.out.println("  Patient ID: " + newPatient.getId());
+        System.out.println("  Name: " + newPatient.getName());
+        System.out.println("  Email: " + newPatient.getEmail());
     }
 
     private void upgradePatient() throws UserNotFoundException {
@@ -96,9 +99,23 @@ public class AdminCLI {
     }
 
     private void assignPatientToClinician() throws UserNotFoundException, TreatmentNotFoundException {
-        System.out.print("Enter treatment ID: ");
+        System.out.print("\nEnter treatment ID: ");
         String treatmentId = scanner.nextLine().trim();
-        System.out.print("Enter clinician ID: ");
+        
+        // Show available clinicians
+        List<Clinician> clinicians = controller.getAllClinicians();
+        if (clinicians.isEmpty()) {
+            System.out.println("No clinicians available.");
+            return;
+        }
+        
+        System.out.println("\n📋 Available Clinicians:");
+        for (Clinician c : clinicians) {
+            System.out.printf("  - ID: %-20s Name: %-25s Specialization: %s\n", 
+                c.getId(), c.getName(), c.getSpecialization());
+        }
+        
+        System.out.print("\nEnter clinician ID: ");
         String clinicianId = scanner.nextLine().trim();
         controller.assignClinician(treatmentId, clinicianId);
         System.out.println("✓ Clinician assigned successfully");
@@ -167,24 +184,97 @@ public class AdminCLI {
         
         switch (choice) {
             case "1":
-                List<Patient> patients = controller.getAllPatients();
-                patients.forEach(System.out::println);
+                viewPatients();
                 break;
             case "2":
-                List<TreatmentType> types = controller.getAllTreatmentTypes();
-                types.forEach(System.out::println);
+                viewTreatmentTypes();
                 break;
             case "3":
-                List<Bill> bills = controller.getAllBills();
-                bills.forEach(System.out::println);
+                viewBills();
                 break;
             case "4":
-                // Show all treatments
-                System.out.println("(Treatments would be displayed here)");
+                viewTreatments();
                 break;
             default:
                 System.out.println("Invalid option");
         }
+    }
+
+    private void viewPatients() {
+        List<Patient> patients = controller.getAllPatients();
+        if (patients.isEmpty()) {
+            System.out.println("\nNo patients found.");
+            return;
+        }
+        System.out.println("\n╔════════════════════════════════════════════════════════════════════╗");
+        System.out.println("║                         ALL PATIENTS                             ║");
+        System.out.println("╠════════════════════════════════════════════════════════════════════╣");
+        for (Patient p : patients) {
+            System.out.printf("║ ID: %-20s Name: %-30s ║\n", p.getId(), p.getName());
+            System.out.printf("║ Email: %-20s Phone: %-30s ║\n", p.getEmail(), p.getPhone());
+            System.out.printf("║ Registered: %-10s Flagged: %-10s Promotions: %-10s ║\n", 
+                p.isRegistered(), p.isFlagged(), p.isOptedInForPromotions());
+            System.out.println("╠════════════════════════════════════════════════════════════════════╣");
+        }
+        System.out.println("╚════════════════════════════════════════════════════════════════════╝");
+    }
+
+    private void viewTreatmentTypes() {
+        List<TreatmentType> types = controller.getAllTreatmentTypes();
+        if (types.isEmpty()) {
+            System.out.println("\nNo treatment types found.");
+            return;
+        }
+        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+        System.out.println("║                 TREATMENT TYPES                     ║");
+        System.out.println("╠═══════════════════════════════════════════════════════╣");
+        for (TreatmentType t : types) {
+            System.out.printf("║ ID: %-20s Name: %-25s ║\n", t.getId(), t.getName());
+            System.out.printf("║ Price: $%.2f                                           ║\n", t.getPrice());
+            System.out.println("╠═══════════════════════════════════════════════════════╣");
+        }
+        System.out.println("╚═══════════════════════════════════════════════════════╝");
+    }
+
+    private void viewBills() {
+        List<Bill> bills = controller.getAllBills();
+        if (bills.isEmpty()) {
+            System.out.println("\nNo bills found.");
+            return;
+        }
+        System.out.println("\n╔═══════════════════════════════════════════════════════════════════╗");
+        System.out.println("║                         ALL BILLS                               ║");
+        System.out.println("╠═══════════════════════════════════════════════════════════════════╣");
+        for (Bill b : bills) {
+            System.out.printf("║ Bill ID: %-25s Amount: $%.2f ║\n", b.getBillId(), b.getTotalAmount());
+            System.out.printf("║ Patient ID: %-35s ║\n", b.getPatientId());
+            System.out.printf("║ Status: %s                                              ║\n", 
+                b.isPaid() ? "PAID" : "PENDING");
+            System.out.println("╠═══════════════════════════════════════════════════════════════════╣");
+        }
+        System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
+    }
+
+    private void viewTreatments() {
+        System.out.println("\nView treatments for patient?");
+        System.out.print("Enter patient ID: ");
+        String patientId = scanner.nextLine().trim();
+        List<Treatment> treatments = controller.getPatientTreatments(patientId);
+        if (treatments.isEmpty()) {
+            System.out.println("No treatments found for this patient.");
+            return;
+        }
+        System.out.println("\n╔═══════════════════════════════════════════════════════════════════╗");
+        System.out.println("║                    PATIENT TREATMENTS                           ║");
+        System.out.println("╠═══════════════════════════════════════════════════════════════════╣");
+        for (Treatment t : treatments) {
+            System.out.printf("║ Treatment ID: %-29s ║\n", t.getTreatmentId());
+            System.out.printf("║ Status: %-45s ║\n", t.getStatus().getDisplayName());
+            System.out.printf("║ Clinician: %-44s ║\n", 
+                t.getClinicianId() != null ? t.getClinicianId() : "Not assigned");
+            System.out.println("╠═══════════════════════════════════════════════════════════════════╣");
+        }
+        System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
     }
 
     private void logout() {

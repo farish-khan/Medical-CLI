@@ -58,6 +58,16 @@ public class MMSController {
         patients.add(patient);
     }
 
+    public Patient registerPatientAndReturn(String name, String phone, String email, String password) 
+            throws InvalidInputException {
+        if (name == null || name.isEmpty() || email == null || email.isEmpty()) {
+            throw new InvalidInputException("Name and email cannot be empty");
+        }
+        Patient patient = new Patient("PAT" + System.currentTimeMillis(), name, phone, email, password);
+        patients.add(patient);
+        return patient;
+    }
+
     public Patient getPatient(String patientId) throws UserNotFoundException {
         return patients.stream()
                 .filter(p -> p.getId().equals(patientId))

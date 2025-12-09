@@ -1,7 +1,7 @@
 package com.mms.exceptions;
 
 /**
- * Exception thrown when a treatment is not found in the system
+ * Exception thrown when a treatment is not found in the system.
  */
 public class TreatmentNotFoundException extends Exception {
     public TreatmentNotFoundException(String message) {

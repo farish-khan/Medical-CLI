@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mms.tests.MMSSystemTest" time="0.041" tests="26" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/faizan/medical-cli/target/test-classes:/Users/faizan/medical-cli/target/classes:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.3/junit-jupiter-api-5.9.3.jar:/Users/faizan/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/faizan/.m2/repository/org/junit/platform/junit-platform-commons/1.9.3/junit-platform-commons-1.9.3.jar:/Users/faizan/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.3/junit-jupiter-engine-5.9.3.jar:/Users/faizan/.m2/repository/org/junit/platform/junit-platform-engine/1.9.3/junit-platform-engine-1.9.3.jar:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.3/junit-jupiter-params-5.9.3.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Asia/Kolkata"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="IN"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/faizan/medical-cli/target/surefire/surefirebooter-20251209130712366_3.jar /Users/faizan/medical-cli/target/surefire 2025-12-09T13-07-12_327-jvmRun1 surefire-20251209130712366_1tmp surefire_0-20251209130712366_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/faizan/medical-cli/target/test-classes:/Users/faizan/medical-cli/target/classes:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.3/junit-jupiter-api-5.9.3.jar:/Users/faizan/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/faizan/.m2/repository/org/junit/platform/junit-platform-commons/1.9.3/junit-platform-commons-1.9.3.jar:/Users/faizan/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.3/junit-jupiter-engine-5.9.3.jar:/Users/faizan/.m2/repository/org/junit/platform/junit-platform-engine/1.9.3/junit-platform-engine-1.9.3.jar:/Users/faizan/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.3/junit-jupiter-params-5.9.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/faizan"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-01-21"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/faizan/medical-cli"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/faizan/medical-cli/target/surefire/surefirebooter-20251209130712366_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="21.0.6+7-LTS"/>
+    <property name="user.name" value="faizan"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="15.7.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-21.0.6+7"/>
+    <property name="localRepository" value="/Users/faizan/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/rx/kn5g0cbj6p7208mjmrp653qc0000gn/T/"/>
+    <property name="java.version" value="21.0.6"/>
+    <property name="user.dir" value="/Users/faizan/medical-cli"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/faizan/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="21.0.6+7-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testCreateClinicianViaFactory" classname="com.mms.tests.MMSSystemTest" time="0.008"/>
+  <testcase name="testAddTreatmentType" classname="com.mms.tests.MMSSystemTest" time="0.002"/>
+  <testcase name="testCalculateBillTotal" classname="com.mms.tests.MMSSystemTest" time="0.002"/>
+  <testcase name="testUpgradeNonExistentPatient" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testBookTreatmentAsRegisteredPatient" classname="com.mms.tests.MMSSystemTest" time="0.007"/>
+  <testcase name="testGenerateBill" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testAssignNonExistentClinician" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testBookTreatmentAsUnregisteredPatient" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testRegisterPatientWithEmptyName" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testSendNotificationToNonExistentPatient" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testAssignClinician" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testUpdateTreatmentStatus" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testRegisterPatient" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testAddTreatmentTypeWithInvalidPrice" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testValidLogin" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testRemoveNonExistentTreatmentType" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testSendNotification" classname="com.mms.tests.MMSSystemTest" time="0.002">
+    <system-out><![CDATA[
+[NOTIFICATION for John Doe] Test notification
+]]></system-out>
+  </testcase>
+  <testcase name="testRecordPayment" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testPolymorphismShowMenu" classname="com.mms.tests.MMSSystemTest" time="0">
+    <system-out><![CDATA[
+====== ADMIN MENU ======
+1. Register new patient
+2. Upgrade patient to registered
+3. Assign patient to clinician
+4. Add treatment type
+5. Remove treatment type
+6. Generate bill
+7. Record payment
+8. Flag non-paying patient
+9. Send notifications
+10. View patients / treatments / reports
+11. Logout
+========================
+Select option: 
+====== CLINICIAN MENU ======
+1. View assigned patients
+2. Record treatment
+3. Update treatment status
+4. Logout
+============================
+Select option: 
+====== PATIENT MENU ======
+1. Book treatment
+2. View treatment status
+3. View bills
+4. Enable/disable promotions
+5. Logout
+=========================
+Select option: ]]></system-out>
+  </testcase>
+  <testcase name="testCreateAdminViaFactory" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testUpgradePatient" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testCreatePatientViaFactory" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testInvalidLogin" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testFlagPatient" classname="com.mms.tests.MMSSystemTest" time="0.001"/>
+  <testcase name="testTogglePromotions" classname="com.mms.tests.MMSSystemTest" time="0"/>
+  <testcase name="testRemoveTreatmentType" classname="com.mms.tests.MMSSystemTest" time="0"/>
+</testsuite>

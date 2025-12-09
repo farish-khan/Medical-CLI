@@ -1,7 +1,7 @@
 package com.mms.exceptions;
 
 /**
- * Exception thrown when storage operations fail (CSV read/write)
+ * Exception thrown when storage operations fail.
  */
 public class StorageException extends Exception {
     public StorageException(String message) {

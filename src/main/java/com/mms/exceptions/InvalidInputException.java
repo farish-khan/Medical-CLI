@@ -1,7 +1,7 @@
 package com.mms.exceptions;
 
 /**
- * Exception thrown when invalid input is provided by user
+ * Exception thrown when invalid input is provided.
  */
 public class InvalidInputException extends Exception {
     public InvalidInputException(String message) {

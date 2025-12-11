@@ -249,7 +249,7 @@ Effect: Enables/disables promotional notifications
 
 **Step 1: Admin Registers Patient**
 ```
-1. Login as Admin (admin@mms.com / admin123)
+1. Login as Admin ( /admin@mms.com admin123)
 2. Select "1. Register new patient"
 3. Enter: Jane Smith, 555-0200, jane@email.com, jane123
 4. Patient created (ID: PAT1733766400000)

@@ -2,6 +2,7 @@ package com.mms.controllers;
 
 import com.mms.models.*;
 import com.mms.exceptions.*;
+import com.mms.storage.StorageManager;
 import java.util.*;
 
 /**
@@ -10,6 +11,7 @@ import java.util.*;
  */
 public class MMSController {
     private static MMSController instance;
+    private StorageManager storageManager;
     
     private List<Patient> patients;
     private List<Clinician> clinicians;
@@ -19,7 +21,8 @@ public class MMSController {
     private List<Bill> bills;
     private List<Notification> notifications;
 
-    private MMSController() {
+    private MMSController() throws StorageException {
+        this.storageManager = StorageManager.getInstance();
         this.patients = new ArrayList<>();
         this.clinicians = new ArrayList<>();
         this.admins = new ArrayList<>();
@@ -27,14 +30,38 @@ public class MMSController {
         this.treatmentTypes = new ArrayList<>();
         this.bills = new ArrayList<>();
         this.notifications = new ArrayList<>();
-        initializeSampleData();
+        loadDataFromStorage();
+        if (patients.isEmpty() || admins.isEmpty()) {
+            initializeSampleData();
+            saveAllData();
+        }
     }
 
-    public static synchronized MMSController getInstance() {
+    public static synchronized MMSController getInstance() throws StorageException {
         if (instance == null) {
             instance = new MMSController();
         }
         return instance;
+    }
+
+    private void loadDataFromStorage() throws StorageException {
+        this.patients = storageManager.loadPatients();
+        this.clinicians = storageManager.loadClinicians();
+        this.admins = storageManager.loadAdmins();
+        this.treatments = storageManager.loadTreatments();
+        this.treatmentTypes = storageManager.loadTreatmentTypes();
+        this.bills = storageManager.loadBills();
+        this.notifications = storageManager.loadNotifications();
+    }
+
+    private void saveAllData() throws StorageException {
+        storageManager.savePatients(patients);
+        storageManager.saveClinicians(clinicians);
+        storageManager.saveAdmins(admins);
+        storageManager.saveTreatments(treatments);
+        storageManager.saveTreatmentTypes(treatmentTypes);
+        storageManager.saveBills(bills);
+        storageManager.saveNotifications(notifications);
     }
 
     private void initializeSampleData() {
@@ -50,21 +77,23 @@ public class MMSController {
 
     // ===== PATIENT MANAGEMENT =====
     public void registerPatient(String name, String phone, String email, String password) 
-            throws InvalidInputException {
+            throws InvalidInputException, StorageException {
         if (name == null || name.isEmpty() || email == null || email.isEmpty()) {
             throw new InvalidInputException("Name and email cannot be empty");
         }
         Patient patient = new Patient("PAT" + System.currentTimeMillis(), name, phone, email, password);
         patients.add(patient);
+        storageManager.savePatients(patients);
     }
 
     public Patient registerPatientAndReturn(String name, String phone, String email, String password) 
-            throws InvalidInputException {
+            throws InvalidInputException, StorageException {
         if (name == null || name.isEmpty() || email == null || email.isEmpty()) {
             throw new InvalidInputException("Name and email cannot be empty");
         }
         Patient patient = new Patient("PAT" + System.currentTimeMillis(), name, phone, email, password);
         patients.add(patient);
+        storageManager.savePatients(patients);
         return patient;
     }
 
@@ -75,14 +104,16 @@ public class MMSController {
                 .orElseThrow(() -> new UserNotFoundException("Patient not found: " + patientId));
     }
 
-    public void upgradePatient(String patientId) throws UserNotFoundException {
+    public void upgradePatient(String patientId) throws UserNotFoundException, StorageException {
         Patient patient = getPatient(patientId);
         patient.upgrade();
+        storageManager.savePatients(patients);
     }
 
-    public void flagPatient(String patientId) throws UserNotFoundException {
+    public void flagPatient(String patientId) throws UserNotFoundException, StorageException {
         Patient patient = getPatient(patientId);
         patient.markFlagged();
+        storageManager.savePatients(patients);
     }
 
     public List<Patient> getAllPatients() {
@@ -91,7 +122,7 @@ public class MMSController {
 
     // ===== TREATMENT MANAGEMENT =====
     public void bookTreatment(String patientId, String treatmentTypeId) 
-            throws UserNotFoundException, TreatmentNotFoundException, InvalidInputException {
+            throws UserNotFoundException, TreatmentNotFoundException, InvalidInputException, StorageException {
         Patient patient = getPatient(patientId);
         if (!patient.isRegistered()) {
             throw new InvalidInputException("Patient must be registered to book treatment");
@@ -105,10 +136,11 @@ public class MMSController {
         
         Treatment treatment = new Treatment("TRE" + System.currentTimeMillis(), patientId, treatmentTypeId);
         treatments.add(treatment);
+        storageManager.saveTreatments(treatments);
     }
 
     public void assignClinician(String treatmentId, String clinicianId) 
-            throws TreatmentNotFoundException, UserNotFoundException {
+            throws TreatmentNotFoundException, UserNotFoundException, StorageException {
         Treatment treatment = treatments.stream()
                 .filter(t -> t.getTreatmentId().equals(treatmentId))
                 .findFirst()
@@ -121,16 +153,18 @@ public class MMSController {
                 .orElseThrow(() -> new UserNotFoundException("Clinician not found"));
         
         treatment.setClinicianId(clinicianId);
+        storageManager.saveTreatments(treatments);
     }
 
     public void updateTreatmentStatus(String treatmentId, TreatmentStatus status) 
-            throws TreatmentNotFoundException {
+            throws TreatmentNotFoundException, StorageException {
         Treatment treatment = treatments.stream()
                 .filter(t -> t.getTreatmentId().equals(treatmentId))
                 .findFirst()
                 .orElseThrow(() -> new TreatmentNotFoundException("Treatment not found"));
         
         treatment.setStatus(status);
+        storageManager.saveTreatments(treatments);
     }
 
     public Treatment getTreatment(String treatmentId) throws TreatmentNotFoundException {
@@ -153,19 +187,21 @@ public class MMSController {
     }
 
     // ===== TREATMENT TYPE MANAGEMENT =====
-    public void addTreatmentType(String name, double price) throws InvalidInputException {
+    public void addTreatmentType(String name, double price) throws InvalidInputException, StorageException {
         if (name == null || name.isEmpty() || price <= 0) {
             throw new InvalidInputException("Invalid treatment type data");
         }
         TreatmentType type = new TreatmentType("TRT" + System.currentTimeMillis(), name, price);
         treatmentTypes.add(type);
+        storageManager.saveTreatmentTypes(treatmentTypes);
     }
 
-    public void removeTreatmentType(String treatmentTypeId) throws TreatmentNotFoundException {
+    public void removeTreatmentType(String treatmentTypeId) throws TreatmentNotFoundException, StorageException {
         boolean removed = treatmentTypes.removeIf(t -> t.getId().equals(treatmentTypeId));
         if (!removed) {
             throw new TreatmentNotFoundException("Treatment type not found");
         }
+        storageManager.saveTreatmentTypes(treatmentTypes);
     }
 
     public TreatmentType getTreatmentType(String typeId) throws TreatmentNotFoundException {
@@ -181,7 +217,7 @@ public class MMSController {
 
     // ===== BILLING MANAGEMENT =====
     public Bill generateBill(String treatmentId) 
-            throws TreatmentNotFoundException {
+            throws TreatmentNotFoundException, StorageException {
         Treatment treatment = getTreatment(treatmentId);
         TreatmentType type = getTreatmentType(treatment.getTreatmentTypeId());
         
@@ -189,11 +225,13 @@ public class MMSController {
                             treatmentId, type.getPrice());
         bills.add(bill);
         treatment.setStatus(TreatmentStatus.BILL_GENERATED);
+        storageManager.saveBills(bills);
+        storageManager.saveTreatments(treatments);
         
         return bill;
     }
 
-    public void recordPayment(String billId) throws TreatmentNotFoundException {
+    public void recordPayment(String billId) throws TreatmentNotFoundException, StorageException {
         Bill bill = bills.stream()
                 .filter(b -> b.getBillId().equals(billId))
                 .findFirst()
@@ -204,6 +242,8 @@ public class MMSController {
         // Update treatment status to PAID
         Treatment treatment = getTreatment(bill.getTreatmentId());
         treatment.setStatus(TreatmentStatus.PAID);
+        storageManager.saveBills(bills);
+        storageManager.saveTreatments(treatments);
     }
 
     public Bill getBill(String billId) throws TreatmentNotFoundException {
@@ -225,12 +265,13 @@ public class MMSController {
 
     // ===== NOTIFICATION MANAGEMENT =====
     public void sendNotification(String patientId, String message, boolean isPromotional) 
-            throws UserNotFoundException {
+            throws UserNotFoundException, StorageException {
         Patient patient = getPatient(patientId);
         Notification notification = new Notification("NOT" + System.currentTimeMillis(), 
                                                      patientId, message, isPromotional);
         notifications.add(notification);
         patient.receiveNotification(notification);
+        storageManager.saveNotifications(notifications);
     }
 
     public List<Notification> getPatientNotifications(String patientId) {

@@ -37,6 +37,106 @@ public class StorageManager {
         return new File(storageDirectory, filename);
     }
 
+    // ===== ADMINS =====
+    public void saveAdmins(List<Admin> admins) throws StorageException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(getFile("admins.csv")))) {
+            writer.println("id,name,phone,email,department");
+            for (Admin admin : admins) {
+                writer.printf("%s,%s,%s,%s,%s%n",
+                        admin.getId(),
+                        admin.getName(),
+                        admin.getPhone(),
+                        admin.getEmail(),
+                        admin.getDepartment());
+            }
+        } catch (IOException e) {
+            throw new StorageException("Failed to save admins: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Admin> loadAdmins() throws StorageException {
+        List<Admin> admins = new ArrayList<>();
+        File file = getFile("admins.csv");
+        
+        if (!file.exists()) {
+            return admins;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = reader.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                
+                String[] parts = line.split(",");
+                if (parts.length < 4) {
+                    throw new StorageException("Invalid admin data in CSV");
+                }
+                
+                String department = parts.length > 4 ? parts[4] : "";
+                Admin admin = new Admin(parts[0], parts[1], parts[2], parts[3], "", department);
+                admins.add(admin);
+            }
+        } catch (IOException e) {
+            throw new StorageException("Failed to load admins: " + e.getMessage(), e);
+        }
+        return admins;
+    }
+
+    // ===== CLINICIANS =====
+    public void saveClinicians(List<Clinician> clinicians) throws StorageException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(getFile("clinicians.csv")))) {
+            writer.println("id,name,phone,email,specialization,maxPatients");
+            for (Clinician clinician : clinicians) {
+                writer.printf("%s,%s,%s,%s,%s,%d%n",
+                        clinician.getId(),
+                        clinician.getName(),
+                        clinician.getPhone(),
+                        clinician.getEmail(),
+                        clinician.getSpecialization(),
+                        clinician.getMaxPatients());
+            }
+        } catch (IOException e) {
+            throw new StorageException("Failed to save clinicians: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Clinician> loadClinicians() throws StorageException {
+        List<Clinician> clinicians = new ArrayList<>();
+        File file = getFile("clinicians.csv");
+        
+        if (!file.exists()) {
+            return clinicians;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = reader.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                
+                String[] parts = line.split(",");
+                if (parts.length < 4) {
+                    throw new StorageException("Invalid clinician data in CSV");
+                }
+                
+                String specialization = parts.length > 4 ? parts[4] : "";
+                int maxPatients = parts.length > 5 ? Integer.parseInt(parts[5]) : 0;
+                Clinician clinician = new Clinician(parts[0], parts[1], parts[2], parts[3], "", specialization, maxPatients);
+                clinicians.add(clinician);
+            }
+        } catch (IOException e) {
+            throw new StorageException("Failed to load clinicians: " + e.getMessage(), e);
+        }
+        return clinicians;
+    }
+
     // ===== PATIENTS =====
     public void savePatients(List<Patient> patients) throws StorageException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(getFile("patients.csv")))) {

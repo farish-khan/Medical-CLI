@@ -15,7 +15,7 @@ public class AdminCLI {
     private Scanner scanner;
     private boolean isLoggedIn;
 
-    public AdminCLI(Admin admin, Scanner scanner) {
+    public AdminCLI(Admin admin, Scanner scanner) throws StorageException {
         this.admin = admin;
         this.controller = MMSController.getInstance();
         this.scanner = scanner;
@@ -91,14 +91,14 @@ public class AdminCLI {
         System.out.println("  Email: " + newPatient.getEmail());
     }
 
-    private void upgradePatient() throws UserNotFoundException {
+    private void upgradePatient() throws UserNotFoundException, StorageException {
         System.out.print("Enter patient ID to upgrade: ");
         String patientId = scanner.nextLine().trim();
         controller.upgradePatient(patientId);
         System.out.println("✓ Patient upgraded to registered");
     }
 
-    private void assignPatientToClinician() throws UserNotFoundException, TreatmentNotFoundException {
+    private void assignPatientToClinician() throws UserNotFoundException, TreatmentNotFoundException, StorageException {
         System.out.print("\nEnter treatment ID: ");
         String treatmentId = scanner.nextLine().trim();
         
@@ -121,7 +121,7 @@ public class AdminCLI {
         System.out.println("✓ Clinician assigned successfully");
     }
 
-    private void addTreatmentType() throws InvalidInputException {
+    private void addTreatmentType() throws InvalidInputException, StorageException {
         System.out.print("Enter treatment name: ");
         String name = scanner.nextLine().trim();
         System.out.print("Enter price: ");
@@ -134,21 +134,21 @@ public class AdminCLI {
         }
     }
 
-    private void removeTreatmentType() throws TreatmentNotFoundException {
+    private void removeTreatmentType() throws TreatmentNotFoundException, StorageException {
         System.out.print("Enter treatment type ID to remove: ");
         String typeId = scanner.nextLine().trim();
         controller.removeTreatmentType(typeId);
         System.out.println("✓ Treatment type removed successfully");
     }
 
-    private void generateBill() throws TreatmentNotFoundException {
+    private void generateBill() throws TreatmentNotFoundException, StorageException {
         System.out.print("Enter treatment ID: ");
         String treatmentId = scanner.nextLine().trim();
         Bill bill = controller.generateBill(treatmentId);
         System.out.println("✓ Bill generated: " + bill);
     }
 
-    private void recordPayment() throws TreatmentNotFoundException {
+    private void recordPayment() throws TreatmentNotFoundException, StorageException {
         System.out.print("Enter bill ID: ");
         String billId = scanner.nextLine().trim();
         controller.recordPayment(billId);
@@ -162,7 +162,7 @@ public class AdminCLI {
         System.out.println("✓ Patient flagged successfully");
     }
 
-    private void sendNotifications() throws UserNotFoundException {
+    private void sendNotifications() throws UserNotFoundException, StorageException {
         System.out.print("Enter patient ID: ");
         String patientId = scanner.nextLine().trim();
         System.out.print("Enter message: ");

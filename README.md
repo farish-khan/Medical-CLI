@@ -2,9 +2,7 @@
 
 A comprehensive Java-based console application for managing medical services at Myriad Medical Services (MMS).
 
-## Project Status: ✅ COMPLETE
 
-All requirements from the PRD have been implemented and tested successfully.
 
 ## System Overview
 
